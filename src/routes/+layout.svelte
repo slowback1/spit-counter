@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import MessageBus from '$lib/bus/MessageBus';
-	import Header from '$lib/components/navigation/Header.svelte';
 	import UrlPathProvider, { RealUrlProvider } from '$lib/providers/urlPathProvider';
 	import { ColorTheme } from '$lib/services/Theme/ThemeService';
 	import { Messages } from '$lib/bus/Messages';
@@ -35,7 +34,6 @@
 	class:dark-theme={currentTheme === ColorTheme.Dark}
 >
 	<ToastWrapper />
-	<Header />
 	<main id="content" class="main-content">
 		<slot />
 	</main>
@@ -46,9 +44,9 @@
 	@import '../style/globals.css';
 
 	.main-content {
-		min-height: calc(100vh - var(--gutters-y) * 2 - var(--header-height));
+		height: 100vh;
+		box-sizing: border-box;
 		padding: var(--gutters-y) var(--gutters-x);
-		scroll-behavior: auto;
 		display: flex;
 		flex-direction: column;
 	}
