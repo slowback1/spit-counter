@@ -14,8 +14,21 @@
 			spitCount = count ?? 0;
 		});
 
+		// Add keyboard event listener
+		const handleKeyPress = (event: KeyboardEvent) => {
+			if (event.code === 'Space') {
+				event.preventDefault(); // Prevent page scroll
+				incrementCounter();
+			} else if (event.key.toLowerCase() === 'r') {
+				MessageBus.sendMessage(Messages.SpitCounter, 0);
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyPress);
+
 		return () => {
 			unsubscribe();
+			window.removeEventListener('keydown', handleKeyPress);
 			spitCounter.destroy();
 		};
 	});
@@ -31,6 +44,10 @@
 </svelte:head>
 
 <div class="container">
+	<div class="instructions">
+		<p>Press <kbd>Space</kbd> to spit</p>
+		<p>Press <kbd>R</kbd> to reset</p>
+	</div>
 	<h1>Spit Counter: {spitCount}</h1>
 	<button class="spit-button" on:click={incrementCounter} aria-label="Spit">
 		<svg viewBox="0 0 100 100" class="baseball">
@@ -179,6 +196,31 @@
 		min-height: 100vh;
 		padding: 2rem;
 		text-align: center;
+		position: relative;
+	}
+
+	.instructions {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		text-align: left;
+		font-size: 1rem;
+		color: var(--color-font);
+	}
+
+	.instructions p {
+		margin: 0.5em 0;
+	}
+
+	.instructions kbd {
+		background-color: var(--color-background);
+		border: 1px solid var(--color-font);
+		border-radius: 3px;
+		padding: 0.1em 0.4em;
+		font-family: monospace;
+		font-size: 0.9em;
+		box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+		color: var(--color-font);
 	}
 
 	h1 {
