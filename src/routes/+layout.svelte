@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import MessageBus from '$lib/bus/MessageBus';
 	import UrlPathProvider, { RealUrlProvider } from '$lib/providers/urlPathProvider';
-	import { ColorTheme } from '$lib/services/Theme/ThemeService';
 	import { Messages } from '$lib/bus/Messages';
 	import ConfigService from '$lib/services/Config/ConfigService';
 	import ToastWrapper from '$lib/ui/containers/toast/ToastWrapper.svelte';
@@ -10,19 +9,12 @@
 	import ConfigFeatureFlagProvider from '$lib/services/FeatureFlag/ConfigFeatureFlagProvider';
 	import LocalStorageProvider from '$lib/bus/providers/localStorageProvider';
 
-	let currentTheme: ColorTheme = ColorTheme.Light;
-
 	onMount(() => {
 		MessageBus.initialize(new LocalStorageProvider());
 		MessageBus.clear(Messages.SpitCounter);
 		UrlPathProvider.initialize(new RealUrlProvider());
 		ConfigService.initialize();
 		FeatureFlagService.initialize(new ConfigFeatureFlagProvider());
-
-		MessageBus.subscribe<ColorTheme>(
-			Messages.CurrentTheme,
-			(value) => (currentTheme = value ?? ColorTheme.Light)
-		);
 	});
 </script>
 
@@ -30,10 +22,7 @@
 	<meta name="description" content="The Svelte Starter Kit!!!" />
 </svelte:head>
 
-<div
-	class:light-theme={currentTheme === ColorTheme.Light}
-	class:dark-theme={currentTheme === ColorTheme.Dark}
->
+<div class="dark-theme">
 	<ToastWrapper />
 	<main id="content" class="main-content">
 		<slot />
