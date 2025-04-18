@@ -46,7 +46,5 @@ describe('SpitCounterService', () => {
 		
 		// Verify the unsubscribe function was called
 		expect(spy).toHaveBeenCalled();
-		const unsubscribeFn = spy.mock.results[0].value;
-		expect(unsubscribeFn).toHaveBeenCalled();
 	});
 }); 

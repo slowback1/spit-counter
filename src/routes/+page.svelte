@@ -1,12 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import SpitCounterService from '$lib/services/SpitCounter/SpitCounterService.svelte';
+	import ResetButton from '$lib/components/ResetButton.svelte';
+	import MessageBus from '$lib/bus/MessageBus';
+	import { Messages } from '$lib/bus/Messages';
 
 	const spitCounter = new SpitCounterService();
 	let spitCount = $state(spitCounter.getCount());
 
 	onMount(() => {
+		// Subscribe to counter updates
+		const unsubscribe = MessageBus.subscribe(Messages.SpitCounter, (count) => {
+			spitCount = count ?? 0;
+		});
+
 		return () => {
+			unsubscribe();
 			spitCounter.destroy();
 		};
 	});
@@ -26,6 +35,7 @@
 	<button class="spit-button" on:click={incrementCounter}>
 		Spit
 	</button>
+	<ResetButton />
 </div>
 
 <style>
