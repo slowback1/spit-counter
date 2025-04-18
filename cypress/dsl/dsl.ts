@@ -1,11 +1,19 @@
-export default abstract class DSL {
-	constructor() {
-		this.visit();
+export abstract class DSL {
+	protected constructor() {}
 
-		// potential grossness ahead -- sveltekit is in the "handoff to client" phase when the page is initially loaded
-		// so we need to add a wait before elements are consistently interactable
-		cy.wait(500);
+	protected getElement(selector: string): Cypress.Chainable<JQuery<HTMLElement>> {
+		return cy.get(selector);
 	}
 
-	protected abstract visit(): void;
+	protected clickElement(selector: string): void {
+		this.getElement(selector).click();
+	}
+
+	protected assertText(selector: string, expectedText: string): void {
+		this.getElement(selector).should('contain', expectedText);
+	}
+
+	protected visitPage(path: string): void {
+		cy.visit(path);
+	}
 }

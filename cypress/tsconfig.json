@@ -9,7 +9,6 @@
     "sourceMap": true,
     "strict": false,
     "types": ["cypress", "cypress-axe"],
-    "moduleResolution": "bundler",
     "experimentalDecorators": true
   },
 }
