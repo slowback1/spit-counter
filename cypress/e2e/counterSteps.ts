@@ -9,10 +9,13 @@ Given('I can see the counter', () => {
 });
 
 Then('I see the counter is {int}', (expectedCount: number) => {
-	let actualValue = counterDSL.getCounterValue();
-	expect(actualValue).to.equal(expectedCount);
+	counterDSL.assertCounterValue(expectedCount);
 });
 
 When('I click the increment button', () => {
 	counterDSL.clickIncrementButton();
+});
+
+When('I reset the counter', () => {
+	counterDSL.resetCounter();
 }); 

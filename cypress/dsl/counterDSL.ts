@@ -33,4 +33,8 @@ export class CounterDSL extends DSL {
 			win.location.reload();
 		});
 	}
+
+	public assertCounterValue(expectedCount: number): void {
+		this.assertText('h1', `Spit Counter: ${expectedCount}`);
+	}
 } 
