@@ -14,6 +14,7 @@
 
 	onMount(() => {
 		MessageBus.initialize(new LocalStorageProvider());
+		MessageBus.clear(Messages.SpitCounter);
 		UrlPathProvider.initialize(new RealUrlProvider());
 		ConfigService.initialize();
 		FeatureFlagService.initialize(new ConfigFeatureFlagProvider());
