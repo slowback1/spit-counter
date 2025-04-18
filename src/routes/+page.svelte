@@ -1,36 +1,67 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import FeatureFlagService from '$lib/services/FeatureFlag/FeatureFlagService';
-	import { FeatureFlags } from '$lib/services/FeatureFlag/FeatureFlags';
-	import FeatureToggle from '$lib/utils/FeatureToggle.svelte';
+	import SpitCounterService from '$lib/services/SpitCounter/SpitCounterService.svelte';
 
-	let showDemo = false;
+	const spitCounter = new SpitCounterService();
+	let spitCount = $state(spitCounter.getCount());
 
 	onMount(() => {
-		let unsubscribe = FeatureFlagService.subscribeToFeature(
-			FeatureFlags.DEMO_FEATURE_FLAG,
-			(value) => {
-				showDemo = value;
-			}
-		);
-
 		return () => {
-			unsubscribe();
+			spitCounter.destroy();
 		};
 	});
+
+	function incrementCounter() {
+		spitCounter.incrementCount();
+		spitCount = spitCounter.getCount();
+	}
 </script>
 
 <svelte:head>
-	<title>Svelte Starter Kit</title>
+	<title>Spit Counter</title>
 </svelte:head>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="container">
+	<h1>Spit Counter: {spitCount}</h1>
+	<button class="spit-button" on:click={incrementCounter}>
+		Spit
+	</button>
+</div>
 
-<p>
-	Visit <a href="demo/content">The demo pages</a> to see some of the functionalities of the starter kit!
-</p>
+<style>
+	.container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 100vh;
+		padding: 2rem;
+		text-align: center;
+	}
 
-<FeatureToggle featureFlag={FeatureFlags.DEMO_FEATURE_FLAG}>
-	<p slot="enabled">Looks like you know about feature flags!</p>
-</FeatureToggle>
+	h1 {
+		font-size: 2.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.spit-button {
+		width: 200px;
+		height: 200px;
+		border-radius: 50%;
+		background-color: #ff0000;
+		color: white;
+		font-size: 2rem;
+		font-weight: bold;
+		border: none;
+		cursor: pointer;
+		transition: transform 0.1s ease;
+	}
+
+	.spit-button:hover {
+		transform: scale(1.05);
+	}
+
+	.spit-button:active {
+		transform: scale(0.95);
+	}
+</style>
