@@ -6,7 +6,7 @@
 
 cd $(git rev-parse --show-toplevel) || exit 1
 
-REGISTRY=slowback
+REGISTRY=slowback1
 TAG=mlb-spit-counter
 
 docker build -t=${TAG} -f docker/Dockerfile --target=final .
