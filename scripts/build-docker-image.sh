@@ -6,22 +6,8 @@
 
 cd $(git rev-parse --show-toplevel) || exit 1
 
-if [ -z ${REGISTRY} ]; then
-  echo "REGISTRY is unset, please set it before running this script";
-  exit 1
-fi
-
-if [ -z ${BUILD_NUMBER} ]; then
-  echo "BUILD_NUMBER is unset, please set it before running this script";
-  exit 1
-fi
-
-if [ -z ${PROJECT_NAME} ]; then
-  echo "PROJECT_NAME is unset, setting to 'frontend'";
-  PROJECT_NAME="frontend"
-fi
-
-TAG="${PROJECT_NAME}:${BUILD_NUMBER}"
+REGISTRY=slowback
+TAG=mlb-spit-counter
 
 docker build -t=${TAG} -f docker/Dockerfile --target=final .
 docker image tag ${TAG} ${REGISTRY}/${TAG}
