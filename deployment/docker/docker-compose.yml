@@ -1,0 +1,17 @@
+services:
+  mlb-spit-counter:
+    image: slowback1/mlb-spit-counter:latest
+    environment:
+      - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.msc.rule=Host(`mlb-spit-counter.slowback.net`)"
+      - "traefik.http.services.msc.loadbalancer.server.port=80"
+      - "traefik.http.routers.msc.entrypoints=websecure"
+      - "traefik.http.routers.msc.tls.certresolver=myresolver"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
